@@ -6,7 +6,7 @@ interface ProgressBar {
   budget?: number
 }
 
-export default function ProgressBar({ week, budget = 225 }: ProgressBar) {
+export default function ProgressBar({ week, budget = 250 }: ProgressBar) {
   const total = useAppSelector((state) => state.app.weeklyTotal)
   const percentage = (total / budget) * 100
   const remaining = budget - total
