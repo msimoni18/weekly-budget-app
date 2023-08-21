@@ -15,9 +15,13 @@ export default function InputForm() {
   const [description, setDescription] = useState('')
 
   const handleResponse = (response: TransactionsResponse) => {
-    dispatch(updateTransactions(response.transactions))
-    dispatch(updateWeeklyTotal(response.weekly_total))
-    toast.success('Transaction uploaded.')
+    if (response.status === 500) {
+      toast.error(response.message)
+    } else {
+      dispatch(updateTransactions(response.transactions))
+      dispatch(updateWeeklyTotal(response.weekly_total))
+      toast.success('Transaction uploaded.')
+    }
   }
 
   const handleSubmit = (event: FormEvent) => {
