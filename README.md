@@ -29,3 +29,9 @@ Build the production application:
 Start the production server:
 
 ```gunicorn -w 2 'app:app'```
+
+To access the production server from a
+remove device, run ```gunicorn -w 2 -b 0.0.0.0 'app:app'```.
+Then navigate to the IP address of the remote
+device with the port of the gunicorn server. To
+find the ip address ```ifconfig | grep "inet"```.
