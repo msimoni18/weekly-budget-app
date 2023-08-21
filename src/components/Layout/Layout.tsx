@@ -16,6 +16,7 @@ export default function Layout() {
             </li>
           ))}
         </ul>
+        <p className="p-2">v{VERSION}</p>
       </nav>
       <Outlet />
     </div>

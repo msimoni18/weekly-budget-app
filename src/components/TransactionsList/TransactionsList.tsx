@@ -7,7 +7,7 @@ export default function TransactionsList() {
   if (!transactions.length) {
     return (
       <div className="max-w-lg m-auto">
-        <h1 className="flex flex-col items-center gap-5 px-5 py-10 text-xl font-bold text-center rounded-xl bg-zinc-900">
+        <h1 className="flex flex-col items-center gap-5 px-5 py-10 text-xl font-bold text-center rounded-lg bg-stone-950">
           No transactions have been recorded.
         </h1>
       </div>
