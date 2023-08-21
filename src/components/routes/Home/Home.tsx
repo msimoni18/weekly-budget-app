@@ -1,7 +1,6 @@
 import InputForm from '../../InputForm/InputForm'
 import Row from '../../Row/Row'
 import ProgressBar from '../../ProgressBar/ProgressBar'
-import TransactionsList from '../../TransactionsList/TransactionsList'
 import { getWeek } from '../../../utilities/utils'
 
 export default function Home() {
@@ -14,9 +13,6 @@ export default function Home() {
       </Row>
       <Row>
         <InputForm />
-      </Row>
-      <Row>
-        <TransactionsList />
       </Row>
     </div>
   )
