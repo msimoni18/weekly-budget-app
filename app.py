@@ -46,6 +46,17 @@ def transactions():
         amount = request.json['transactionData']['amount']
         description = request.json['transactionData']['description']
 
+        # Allow only floats or integers
+        try:
+            amount = round(float(amount), 2)
+        except ValueError:
+            return jsonify({
+                'status': 500,
+                'message': f'Only numbers are allowed. You input {amount!r}.',
+                'transactions': '',
+                'weekly_total': ''
+            })
+
         if update_type == 'add':
             try:
                 cursor.execute(
