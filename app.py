@@ -1,7 +1,7 @@
 import os
 from flask import Flask, jsonify, send_from_directory, request
 from flask_cors import CORS
-from api.utilities import connect, get_transactions
+from api.utilities import connect, get_transactions, get_weekly_budget
 
 # Set up and initialize database
 DB_PATH = os.path.join(os.getenv('HOME'), 'weekly-budget-app')
@@ -86,4 +86,56 @@ def transactions():
         'message': 'Successful request.',
         'transactions': transactions,
         'weekly_total': weekly_total
+    })
+
+@app.route('/get-weekly-budget', methods=['GET', 'POST'])
+def weekly_budget():
+
+    conn = connect(os.path.join(DB_PATH, DB_FILE))
+    cursor = conn.cursor()
+
+    if request.method == 'POST':
+
+        id = request.json['id']
+        amount = request.json['amount']
+
+        # Allow only floats or integers
+        try:
+            amount = round(float(amount), 2)
+        except ValueError:
+            return jsonify({
+                'status': 500,
+                'message': f'Only numbers are allowed. You input {amount!r}.',
+                'transactions': '',
+                'weekly_budget': {}
+            })
+
+        check = get_weekly_budget(cursor)
+        try:
+            if check:
+                cursor.execute(
+                    "UPDATE weeklybudget SET amount = ? WHERE id = ?",
+                    (amount, id)
+                )
+            else:
+                cursor.execute(
+                    "INSERT INTO weeklybudget(id,amount) VALUES(?,?)",
+                    (id, amount)
+                )
+            conn.commit()
+        except Exception as err:
+            print(f'ERROR: {err}')
+
+    weekly_budget = get_weekly_budget(cursor)
+    if not weekly_budget:
+        weekly_budget = {'id': '', 'amount': 0}
+    else:
+        weekly_budget = weekly_budget[0]
+
+    conn.close()
+
+    return jsonify({
+        'status': 200,
+        'message': 'Successful request.',
+        'weekly_budget': weekly_budget
     })

@@ -23,6 +23,14 @@ def connect(filename):
         )
         """)
 
+        # Weekly budget table
+        cursor.execute("""
+        CREATE TABLE IF NOT EXISTS weeklybudget (
+            id TEXT UNIQUE,
+            amount REAL
+        )
+        """)
+
         # Commit changes to database
         conn.commit()
 
@@ -34,4 +42,8 @@ def connect(filename):
 
 def get_transactions(cursor):
     rows = cursor.execute("SELECT * FROM transactions").fetchall()
+    return [dict(row) for row in rows]
+
+def get_weekly_budget(cursor):
+    rows = cursor.execute("SELECT * FROM weeklybudget").fetchall()
     return [dict(row) for row in rows]

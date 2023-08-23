@@ -2,7 +2,11 @@ import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux'
 import type { RootState, AppDispatch } from '../store/store'
 import { useState, useEffect } from 'react'
 import { get } from '../utilities/requests'
-import type { Transaction, TransactionsResponse } from '../types/types'
+import type {
+  Transaction,
+  TransactionsResponse,
+  WeeklyBudgetResponse,
+} from '../types/types'
 
 // Use throughout app instead of plain `useDispatch` and `useSelector`
 type DispatchFunc = () => AppDispatch
@@ -14,8 +18,6 @@ export const useTransactions = () => {
   const [total, setTotal] = useState(0)
 
   const handleResponse = (response: TransactionsResponse) => {
-    console.log('useTransactions')
-    console.log(response)
     setTransactions(response.transactions)
     setTotal(response.weekly_total)
   }
@@ -29,4 +31,22 @@ export const useTransactions = () => {
   }, [])
 
   return { transactions, total }
+}
+
+export const useWeeklyBudget = () => {
+  const [total, setTotal] = useState({ id: '', amount: 0 })
+
+  const handleResponse = (response: WeeklyBudgetResponse) => {
+    setTotal(response.weekly_budget)
+  }
+
+  useEffect(() => {
+    get(
+      'get-weekly-budget',
+      (response) => handleResponse(response as WeeklyBudgetResponse),
+      (error) => console.error(error),
+    )
+  }, [])
+
+  return total
 }
