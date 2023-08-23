@@ -1,5 +1,9 @@
 interface AppState {
   weeklyTotal: number
+  weeklyBudget: {
+    id: string
+    amount: number
+  }
   transactions: {
     id: string
     date: string
@@ -22,4 +26,18 @@ interface TransactionsResponse {
   transactions: Transaction[]
 }
 
-export type { AppState, Transaction, TransactionsResponse }
+interface WeeklyBudgetResponse {
+  status: number
+  message: string
+  weekly_budget: {
+    id: string
+    amount: number
+  }
+}
+
+export type {
+  AppState,
+  Transaction,
+  TransactionsResponse,
+  WeeklyBudgetResponse,
+}
